@@ -9,45 +9,91 @@ const shoppingCartContainer = document.querySelector("#shoppingCartContainer")
 
 const cardContainer= document.querySelector(".cards-container")
 
+const productDetailContainer=document.querySelector('#productDetail')
+const productDetailCloseIcon=document.querySelector('.product-detail-close')
 
 menuEmail.addEventListener('click', toggleDesktopMenu);
 menuHamIcon.addEventListener('click', toggleMobileMenu);
+
 menuCarritoIcon.addEventListener('click', toggleCarritoAside);
+productDetailCloseIcon.addEventListener('click',closeProducDetailAside)
+
 
 
 
 function toggleDesktopMenu() {
-
-
-    if (shoppingCartContainer.classList.contains('inactive')) {
+    if (shoppingCartContainer.classList.contains('inactive') && productDetailContainer.classList.contains('inactive')) {
         desktopMenu.classList.toggle('inactive')
-
-    } else {
+    }
+    if(!shoppingCartContainer.classList.contains('inactive') ){
         shoppingCartContainer.classList.toggle('inactive')
         desktopMenu.classList.toggle('inactive')
     }
+    if(!productDetailContainer.classList.contains('inactive')){
+        productDetailContainer.classList.toggle('inactive')
+        desktopMenu.classList.toggle('inactive')
+    }
+}
 
+
+function toggleCarritoAside() {
+    if(desktopMenu.classList.contains('inactive') && mobileMenu.classList.contains('inactive') && productDetailContainer.classList.contains('inactive') ){
+        shoppingCartContainer.classList.toggle('inactive')
+    }
+    if(!desktopMenu.classList.contains('inactive')){
+        desktopMenu.classList.toggle('inactive')
+        shoppingCartContainer.classList.toggle('inactive')
+    }
+    if(!mobileMenu.classList.contains('inactive')){
+        mobileMenu.classList.toggle('inactive')
+        shoppingCartContainer.classList.toggle('inactive')
+    }
+    if(!productDetailContainer.classList.contains('inactive')){
+        productDetailContainer.classList.toggle('inactive')
+        shoppingCartContainer.classList.toggle('inactive')
+    }
+    
 }
 
 function toggleMobileMenu() {
-
-    if (shoppingCartContainer.classList.contains('inactive')) {
+    if(desktopMenu.classList.contains('inactive') && shoppingCartContainer.classList.contains('inactive') && productDetailContainer.classList.contains('inactive') ){
         mobileMenu.classList.toggle('inactive')
     }
-    else {
+    if(!desktopMenu.classList.contains('inactive')){
+        desktopMenu.classList.toggle('inactive')
+        mobileMenu.classList.toggle('inactive')
+    }
+    if(!shoppingCartContainer.classList.contains('inactive')){ 
+        mobileMenu.classList.toggle('inactive')
         shoppingCartContainer.classList.toggle('inactive')
+    }
+    if(!productDetailContainer.classList.contains('inactive')){ 
+        productDetailContainer.classList.add('inactive')
         mobileMenu.classList.toggle('inactive')
     }
 }
 
-function toggleCarritoAside() {
-    if (mobileMenu.classList.contains('inactive') && desktopMenu.classList.contains('inactive')) {
+function closeProducDetailAside(){
+    productDetailContainer.classList.add('inactive')
+}
+
+function openProductDetailAside(){
+    if(shoppingCartContainer.classList.contains('inactive') && mobileMenu.classList.contains('inactive')&& desktopMenu.classList.contains('inactive')){
+        productDetailContainer.classList.remove('inactive')
+        
+    }if(!shoppingCartContainer.classList.contains('inactive')){
         shoppingCartContainer.classList.toggle('inactive')
-    }
-    else {
+        productDetailContainer.classList.remove('inactive')
+        
+    }if(!mobileMenu.classList.contains('inactive')){
+        productDetailContainer.classList.remove('inactive')
         mobileMenu.classList.toggle('inactive')
-        shoppingCartContainer.classList.toggle('inactive')
+
+    }
+    if(!desktopMenu.classList.contains('inactive')){
+        productDetailContainer.classList.remove('inactive')
         desktopMenu.classList.toggle('inactive')
+
     }
 }
 
@@ -197,38 +243,46 @@ productList.push({
 //             </div>
 //           </div>
 
-for( product of productList){
-
-    const producCard= document.createElement('div')
-    producCard.classList.add('product-card')
+function renderProducts(arr){
+    for( product of arr){
     
-    const img = document.createElement('img')
-    img.setAttribute('src',product.img)
+        const producCard= document.createElement('div')
+        producCard.classList.add('product-card')
+        
+        const img = document.createElement('img')
+        img.setAttribute('src',product.img)
+        img.addEventListener('click',openProductDetailAside)
+
+        
+        const producInfo= document.createElement('div')
+        producInfo.classList.add('product-info')
     
-    const producInfo= document.createElement('div')
-    producInfo.classList.add('product-info')
-
-    const producInfoDiv = document.createElement('div')
+        const producInfoDiv = document.createElement('div')
+        
+        const productPrice = document.createElement('p')
+        productPrice.innerText='$'+product.price
+        const productName = document.createElement('p')
+        productName.innerText=product.name
     
-    const productPrice = document.createElement('p')
-    productPrice.innerText='$'+product.price
-    const productName = document.createElement('p')
-    productName.innerText=product.name
+        const producInfoFigure = document.createElement('figure')
+        const productimgCard = document.createElement('img')
+    
+        productimgCard.setAttribute('src','./icons/bt_add_to_cart.svg')
+    
+        producInfoFigure.appendChild(productimgCard)
+        producInfoDiv.appendChild(productPrice)
+        producInfoDiv.appendChild(productName)
+    
+        producInfo.appendChild(producInfoDiv)
+        producInfo.appendChild(producInfoFigure)
+    
+        producCard.appendChild(img)
+        producCard.appendChild(producInfo)
+    
+        cardContainer.appendChild(producCard)
+    }
 
-    const producInfoFigure = document.createElement('figure')
-    const productimgCard = document.createElement('img')
-
-    productimgCard.setAttribute('src','./icons/bt_add_to_cart.svg')
-
-    producInfoFigure.appendChild(productimgCard)
-    producInfoDiv.appendChild(productPrice)
-    producInfoDiv.appendChild(productName)
-
-    producInfo.appendChild(producInfoDiv)
-    producInfo.appendChild(producInfoFigure)
-
-    producCard.appendChild(img)
-    producCard.appendChild(producInfo)
-
-    cardContainer.appendChild(producCard)
 }
+
+renderProducts(productList)
+
