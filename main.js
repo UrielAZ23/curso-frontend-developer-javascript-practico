@@ -7,6 +7,8 @@ const mobileMenu = document.querySelector(".mobile-menu")
 const menuCarritoIcon = document.querySelector(".navbar-shopping-cart")
 const aside = document.querySelector(".product-detail")
 
+const cardContainer= document.querySelector(".cards-container")
+
 
 menuEmail.addEventListener('click', toggleDesktopMenu);
 menuHamIcon.addEventListener('click', toggleMobileMenu);
@@ -206,17 +208,27 @@ for( product of productList){
     const producInfo= document.createElement('div')
     producInfo.classList.add('product-info')
 
-    const producInfoDiv = document.createAttribute('div')
+    const producInfoDiv = document.createElement('div')
     
     const productPrice = document.createElement('p')
     productPrice.innerText='$'+product.price
     const productName = document.createElement('p')
     productName.innerText=product.name
 
-    const producInfoFigure = document.createAttribute('figure')
-    const productimgCard = document.createAttribute('img')
+    const producInfoFigure = document.createElement('figure')
+    const productimgCard = document.createElement('img')
 
     productimgCard.setAttribute('src','./icons/bt_add_to_cart.svg')
 
     producInfoFigure.appendChild(productimgCard)
+    producInfoDiv.appendChild(productPrice)
+    producInfoDiv.appendChild(productName)
+
+    producInfo.appendChild(producInfoDiv)
+    producInfo.appendChild(producInfoFigure)
+
+    producCard.appendChild(img)
+    producCard.appendChild(producInfo)
+
+    cardContainer.appendChild(producCard)
 }
